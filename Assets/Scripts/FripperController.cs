@@ -10,6 +10,10 @@ public class FripperController : MonoBehaviour {
     private float defaultAngle = 20;
     private float flickAngle = -20;
 
+    // フリッパーが動いているか
+    private bool posL = false;
+    private bool posR = false;
+
 	// Use this for initialization
 	void Start () {
         this.myHingeJoint = GetComponent<HingeJoint>();
@@ -53,19 +57,35 @@ public class FripperController : MonoBehaviour {
                     if (touch.position.x <= Screen.width / 2 && tag == "LeftFripperTag")
                     {
                         SetAngle(this.flickAngle);
+                        posL = true;
                     }
                     if (touch.position.x > Screen.width / 2 && tag == "RightFripperTag")
                     {
                         SetAngle(this.flickAngle);
+                        posR = true;
                     }
                         break;
+                case TouchPhase.Moved:
+                    // 画面に触れたまま中心線を超えた場合
+                    if(posL == true && touch.position.x > Screen.width / 2 && tag == "LeftFripperTag")
+                    {
+                        SetAngle(this.defaultAngle);
+                        posL = false;
+                    }
+                    if(posR == true && touch.position.x <= Screen.width / 2 && tag == "RightFripperTag")
+                    {
+                        SetAngle(this.defaultAngle);
+                        posR = false;
+                    }
+
+                    break;
                 case TouchPhase.Ended:
                     // 指を離す
-                    if (touch.position.x < 0 && tag == "LeftFripperTag")
+                    if (touch.position.x <= Screen.width / 2 && tag == "LeftFripperTag")
                     {
                         SetAngle(this.defaultAngle);
                     }
-                    if (touch.position.x > 0 && tag == "RightFripperTag")
+                    if (touch.position.x > Screen.width / 2 && tag == "RightFripperTag")
                     {
                         SetAngle(this.defaultAngle);
                     }
