@@ -49,47 +49,53 @@ public class FripperController : MonoBehaviour {
         // タップの場合
         if(Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
-            switch (touch.phase)
-            {
-                case TouchPhase.Began:
-                    // タップする
-                    if (touch.position.x <= Screen.width / 2 && tag == "LeftFripperTag")
-                    {
-                        SetAngle(this.flickAngle);
-                        posL = true;
-                    }
-                    if (touch.position.x > Screen.width / 2 && tag == "RightFripperTag")
-                    {
-                        SetAngle(this.flickAngle);
-                        posR = true;
-                    }
-                        break;
-                case TouchPhase.Moved:
-                    // 画面に触れたまま中心線を超えた場合
-                    if(posL == true && touch.position.x > Screen.width / 2 && tag == "LeftFripperTag")
-                    {
-                        SetAngle(this.defaultAngle);
-                        posL = false;
-                    }
-                    if(posR == true && touch.position.x <= Screen.width / 2 && tag == "RightFripperTag")
-                    {
-                        SetAngle(this.defaultAngle);
-                        posR = false;
-                    }
+            Touch[] myTouches = Input.touches;
 
-                    break;
-                case TouchPhase.Ended:
-                    // 指を離す
-                    if (touch.position.x <= Screen.width / 2 && tag == "LeftFripperTag")
-                    {
-                        SetAngle(this.defaultAngle);
-                    }
-                    if (touch.position.x > Screen.width / 2 && tag == "RightFripperTag")
-                    {
-                        SetAngle(this.defaultAngle);
-                    }
-                    break;
+            for(int i = 0; i < myTouches.Length; i++)
+            {
+                switch (myTouches[i].phase)
+                {
+                    case TouchPhase.Began:
+                        // タップする
+                        if (myTouches[i].position.x <= Screen.width / 2 && tag == "LeftFripperTag")
+                        {
+                            SetAngle(this.flickAngle);
+                            posL = true;
+                        }
+                        if (myTouches[i].position.x > Screen.width / 2 && tag == "RightFripperTag")
+                        {
+                            SetAngle(this.flickAngle);
+                            posR = true;
+                        }
+                        break;
+                    case TouchPhase.Moved:
+                        // 画面に触れたまま中心線を超えた場合
+                        if (posL == true && myTouches[i].position.x > Screen.width / 2 && tag == "LeftFripperTag")
+                        {
+                            SetAngle(this.defaultAngle);
+                            posL = false;
+                        }
+                        if (posR == true && myTouches[i].position.x <= Screen.width / 2 && tag == "RightFripperTag")
+                        {
+                            SetAngle(this.defaultAngle);
+                            posR = false;
+                        }
+                        break;
+                    case TouchPhase.Ended:
+                        // 指を離す
+                        if (myTouches[i].position.x <= Screen.width / 2 && tag == "LeftFripperTag")
+                        {
+                            SetAngle(this.defaultAngle);
+                        }
+                        if (myTouches[i].position.x > Screen.width / 2 && tag == "RightFripperTag")
+                        {
+                            SetAngle(this.defaultAngle);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            
             
             }
         }
